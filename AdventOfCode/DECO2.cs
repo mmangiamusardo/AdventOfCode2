@@ -76,22 +76,6 @@ namespace AdventOfCode
             return -1;
         }
 
-        static int GetBadLevel(List<int> levels, bool isAscending)
-        {
-            for (int i = 0; i < levels.Count() - 1; i++)
-            {
-                if (!IsValidCouple(levels[i], levels[i + 1]))
-                {
-                    return i;
-                }
-                else if (isAscending != IsAscending(new List<int>() { levels[i], levels[i + 1] }))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         private static bool IsStillSafe(List<int> levels, int badLevelPos, int sign) 
         {
             bool ret = true;
@@ -110,6 +94,21 @@ namespace AdventOfCode
             return ret;
         }
 
+        private static int[] RemoveAt(int[] sequence, int index) 
+        {
+            // sposto l'indice all'elemento che devo rimuovere
+            for (int i = index; i < sequence.Length - 1; i++)
+            {
+                // l'elemento corrente deve essere sovrascritton con il successivo
+                sequence[i] = sequence[i + 1];
+            }
+
+            // faccio il trim degli elementi superflui mandati alla fine della sequenza
+            Array.Resize(ref sequence, newSize: sequence.Length-1);
+
+            return sequence;
+        }
+
         public static void AdventOfCode02bis()
         {
             string inputReports = @"7 6 4 2 1
@@ -119,13 +118,13 @@ namespace AdventOfCode
 8 6 4 4 1
 1 3 6 7 9";
 
+            inputReports = InputData.InputReports;
             //inputReports = @"8 11 13 14 15 18 17";
             //inputReports = "8 6 4 4 1";
             //inputReports = "37 40 42 43 44 47 51"
             //inputReports = "34 31 32 35 36 39";
-            //inputReports = "17 19 17 20 23";
-
-            //inputReports = InputData.InputReports;
+            //inputReports = "17 19 17 20 23"
+            inputReports = "61 63 64 66 68 67 68 67";
 
             string[] linesReport = inputReports.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
