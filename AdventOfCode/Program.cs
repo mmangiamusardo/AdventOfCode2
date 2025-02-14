@@ -10,7 +10,9 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            DECO2.AdventOfCode02bis();
+            //DECO2.AdventOfCode02bis();
+            DECO2.AdventOfCodeTris();
+            ;
         }
     }
 }
