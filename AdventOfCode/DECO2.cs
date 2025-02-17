@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static AdventOfCode.DECO2;
 
 namespace AdventOfCode
 {
@@ -134,39 +135,74 @@ namespace AdventOfCode
             //inputReports = "37 40 42 43 44 47 51"
             //inputReports = "34 31 32 35 36 39";
             //inputReports = "17 19 17 20 23";
-            //inputReports = InputData.InputReports;
+            //inputReports = InputReports.Values;
 
             List<string> linesReport = inputReports.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
                 .ToList<string>();
 
-            int safeReportCount = 0;
-            int unsafeReportCount = 0;
+            int safeReportsCount = 0;
+            int unsafeReportsCount = 0;
 
             foreach (var lr in linesReport)
             {
+                Console.WriteLine(lr);
+
                 // dato un livello determinare la distanza con il livello attiguo, rispetto al precedente e il successivo
-           
-                int[] levelsByLine = Regex
+                int[] levels = Regex
                    .Matches(lr, @"\d+")
                    .Cast<Match>()
                    .Select(a => int.Parse(a.Value))
                    .ToArray();
 
-                for (int i = 0; i < levelsByLine.Length; i++)
+                for (int i = 0; i < levels.Length; i++)
                 {
-                    int previousItem = levelsByLine[i-1 > 0 ? i-1 : 0];
-                    var nextItem = levelsByLine[i + 1];
+                    /*
+                    int previousItem = levels[i-1 > 0 ? i-1 : i];
+                    var nextItem = levels[i+1 > levels.Length-1 ? i : i+1];
 
-                    var distancePrev = Math.Abs(levelsByLine[i] - previousItem).IsBetween<int>(1, 3);
-                    var distanceNext = Math.Abs(levelsByLine[i] - nextItem).IsBetween<int>(1, 3);
+                    bool distancePrev = Math.Abs(levels[i] - previousItem).IsBetween<int>(1, 3);
+                    bool distanceNext = Math.Abs(levels[i] - nextItem).IsBetween<int>(1, 3);
 
-                    ;
+                    if (!(distancePrev && distanceNext))
+                    {
+                        unsafeReportsCount++;
+                        break;
+                    }
+                    else 
+                    {
+                        // safeReportsCount++;
+                    }
+                    */
+
+                    // escludi gli estremi
+                    if (!(i == 0 || i == levels.Length - 1)) 
+                    {
+                        int previousItem = levels[i - 1];
+                        var nextItem = levels[i + 1];
+
+                        bool distancePrev = Math.Abs(levels[i] - previousItem).IsBetween<int>(1, 3);
+                        bool distanceNext = Math.Abs(levels[i] - nextItem).IsBetween<int>(1, 3);
+
+                        if (!(distancePrev && distanceNext))
+                        {
+                            unsafeReportsCount++;
+                            break;
+                        }
+                        else
+                        {
+                            // safeReportsCount++;
+                        }
+                    }
+
                 }
 
-                Console.WriteLine(lr);
+                //Console.WriteLine(lr);
             }
+
+            Console.WriteLine($"Safe Reports: {linesReport.Count - unsafeReportsCount}");
+            // Console.WriteLine($"UnSafe Reports: {unsafeReportsCount}");
         }
-        
+
         public static void AdventOfCode02bis()
         {
             string inputReports = @"7 6 4 2 1
@@ -253,6 +289,54 @@ namespace AdventOfCode
             }
 
             Console.WriteLine($"Safe Reports: {safeReportCount}");
+        }
+
+        public class Report 
+        {
+            public List<Level> Levels { get; set; }
+            public Report()
+            {
+                    
+            }
+
+            //public bool IsSafe() { }
+
+        }
+
+        public class Level 
+        {
+            public int Value { get; set; }
+            public int Next { get; set; }
+            public int Previous { get; set; }
+
+            public bool IsFirst()
+            {
+                return Value == Previous;
+            }
+            public bool IsLast()
+            {
+                return Value == Next;
+            }
+
+            //public bool IsValid()
+            //{
+            //    int previousItem = levels[i - 1 > 0 ? i - 1 : i];
+            //    var nextItem = levels[i + 1 > levels.Length - 1 ? i : i + 1];
+
+            //    Console.WriteLine(levels[i]);
+
+            //    bool distancePrev = Math.Abs(levels[i] - previousItem).IsBetween<int>(0, 3);
+            //    bool distanceNext = Math.Abs(levels[i] - nextItem).IsBetween<int>(0, 3);
+
+            //    if (!(distancePrev && distanceNext))
+            //    {
+
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
         }
 
         static class InputData
