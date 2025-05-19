@@ -11,8 +11,8 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
             //DECO2.AdventOfCode02bis();
-
-            Day2.GetSafeReports();
+            DECO2.AdventOfCodeTris();
+            ;
         }
     }
 }
